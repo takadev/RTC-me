@@ -7,15 +7,29 @@
 <body>
   <button onclick="startVideo()">START!!</button>
   <br />
-  <video id="local_video" autoplay style="width: 320px; height: 240px; border: 1px solid black;"></video>
+  <video id="local_video" autoplay style="width: 800px; height: 600px; border: 1px solid black;"></video>
 </body>
 <script type="text/javascript">
   let localVideo = document.getElementById('local_video');
   let localStream;
-  
   // start local video
   function startVideo() {
-    navigator.mediaDevices.getUserMedia({video: true, audio: false})
+    navigator.mediaDevices.getUserMedia(
+      {
+        video: {
+          width: {
+            min:1280,
+            ideal:1500
+          },
+          height: {
+            min:720,
+            ideal:1000
+          }
+        },
+        audio: {
+          echoCancellation: false
+        }
+      })
     .then(function (stream) { // success
       localStream = stream;
       localVideo.src = window.URL.createObjectURL(localStream);
