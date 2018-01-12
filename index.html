@@ -38,5 +38,32 @@
       return;
     });
   }
+  let wsUrl = 'ws://localhost:3001/';
+  let ws = new WebSocket(wsUrl);
+  ws.onopen = function(evt) {
+    console.log('ws open()');
+  };
+  ws.onerror = function(err) {
+    console.error('ws onerror() ERR:', err);
+  };
+
+  ws.onmessage = function(evt) {
+    console.log('ws onmessage() data:', evt.data);
+    let message = JSON.parse(evt.data);
+    if (message.type === 'offer') {
+      // -- got offer ---
+      console.log('Received offer ...');
+      textToReceiveSdp.value = message.sdp;
+      let offer = new RTCSessionDescription(message);
+      setOffer(offer);
+    }
+    else if (message.type === 'answer') {
+      // --- got answer ---
+      console.log('Received answer ...');
+      textToReceiveSdp.value = message.sdp;
+      let answer = new RTCSessionDescription(message);
+      setAnswer(answer);
+    }
+  };
 </script>
 </html>
