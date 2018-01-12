@@ -32,8 +32,7 @@
   let textToReceiveSdp = document.getElementById('text_for_receive_sdp');
 
   // --- prefix -----
-  navigator.getUserMedia  = navigator.getUserMedia    || navigator.webkitGetUserMedia ||
-                            navigator.mozGetUserMedia || navigator.msGetUserMedia;
+  navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
   RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
   RTCSessionDescription = window.RTCSessionDescription || window.webkitRTCSessionDescription || window.mozRTCSessionDescription;
 
@@ -154,7 +153,11 @@
 
   // ---------------------- connection handling -----------------------
   function prepareNewConnection() {
-    let pc_config = {"iceServers":[]};
+    let pc_config = {"iceServers":[
+      {"urls": "stun:stun.l.google.com:19302"},
+      {"urls": "stun:stun1.l.google.com:19302"},
+      {"urls": "stun:stun2.l.google.com:19302"}
+    ]};
     let peer = new RTCPeerConnection(pc_config);
 
     // --- on get remote stream ---
